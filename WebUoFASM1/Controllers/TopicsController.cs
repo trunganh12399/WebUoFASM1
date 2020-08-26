@@ -16,7 +16,7 @@ namespace WebUoFASM1.Controllers
 
         public ActionResult Index()
         {
-            var topics = db.Topics.Include(t => t.Trainer);
+            var topics = db.Topics.Include(t => t.Trainer).ToList();
             return View(topics.ToList());
         }
 
