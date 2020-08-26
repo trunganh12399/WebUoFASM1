@@ -54,7 +54,7 @@ namespace WebUoFASM1.Controllers
             return View(trainer);
         }
 
-        [Authorize(Roles = "Staff")]
+        [Authorize(Roles = "Staff, Trainer")]
         public ActionResult Edit(int? id)
         {
             if (id == null)

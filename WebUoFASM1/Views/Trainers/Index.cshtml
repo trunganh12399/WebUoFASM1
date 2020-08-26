@@ -49,6 +49,11 @@
                 <th>Edit</th>
                 <th>Delete</th>
             }
+            @if (Request.IsAuthenticated && User.IsInRole("Trainer"))
+            {
+                <th>Edit</th>
+
+            }
         </tr>
         @foreach (var item in Model)
         {
@@ -63,6 +68,11 @@
                 {
                     <td> @Html.ActionLink("Edit", "Edit", new { id = item.Id })</td>
                     <td> @Html.ActionLink("Delete", "Delete", new { id = item.Id })</td>
+                }
+                @if (Request.IsAuthenticated && User.IsInRole("Trainer"))
+                {
+                    <td> @Html.ActionLink("Edit", "Edit", new { id = item.Id })</td>
+
                 }
             </tr>
         }

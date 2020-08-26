@@ -26,19 +26,18 @@
 
 <body>
 
-    <h2>Category</h2>
+    <h2>Role</h2>
 
     @if (Request.IsAuthenticated && User.IsInRole("Admin"))
     {
         <p>
-            @Html.ActionLink("Create New", "Create")
+            @Html.ActionLink("Add Role", "Create")
         </p>
     }
 
     <table>
         <tr>
             <th>Name</th>
-            <th>Edit</th>
         </tr>
         @foreach (var item in Model)
         {

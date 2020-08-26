@@ -48,6 +48,11 @@
                 <th>Edit</th>
                 <th>Delete</th>
             }
+            @if (Request.IsAuthenticated && User.IsInRole("Trainer"))
+            {
+                <th>Edit</th>
+
+            }
         </tr>
         @foreach (var item in Model)
         {

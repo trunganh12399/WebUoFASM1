@@ -39,10 +39,11 @@
             <th>Name</th>
             <th>Description</th>
             <th>TrainerName</th>
-            <th>Detail</th>
 
             @if (Request.IsAuthenticated && User.IsInRole("Staff"))
             {
+                <th>Detail</th>
+
                 <th>Edit</th>
                 <th>Delete</th>
             }

@@ -21,21 +21,6 @@ namespace WebUoFASM1.Controllers
         }
 
         [Authorize(Roles = "Staff")]
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Detail detail = db.Details.Find(id);
-            if (detail == null)
-            {
-                return HttpNotFound();
-            }
-            return View(detail);
-        }
-
-        [Authorize(Roles = "Staff")]
         public ActionResult Create()
         {
             ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name");
