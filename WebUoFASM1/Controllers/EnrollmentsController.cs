@@ -25,7 +25,7 @@ namespace WebUoFASM1.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
             Enrollment enrollment = db.Enrollments.Find(id);
             if (enrollment == null)
@@ -64,7 +64,7 @@ namespace WebUoFASM1.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
             Enrollment enrollment = db.Enrollments.Find(id);
             if (enrollment == null)
@@ -96,7 +96,7 @@ namespace WebUoFASM1.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
             Enrollment enrollment = db.Enrollments.Find(id);
             if (enrollment == null)

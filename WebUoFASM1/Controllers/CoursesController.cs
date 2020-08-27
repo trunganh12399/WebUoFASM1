@@ -25,7 +25,7 @@ namespace WebUoFASM1.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
             Course course = db.Courses.Find(id);
             if (course == null)
@@ -62,7 +62,7 @@ namespace WebUoFASM1.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
             Course course = db.Courses.Find(id);
             if (course == null)
@@ -92,7 +92,7 @@ namespace WebUoFASM1.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
             Course course = db.Courses.Find(id);
             if (course == null)

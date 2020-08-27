@@ -25,7 +25,7 @@ namespace WebUoFASM1.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
             Trainee trainee = db.Trainees.Find(id);
             if (trainee == null)
@@ -60,7 +60,7 @@ namespace WebUoFASM1.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
             Trainee trainee = db.Trainees.Find(id);
             if (trainee == null)
@@ -88,7 +88,7 @@ namespace WebUoFASM1.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
             Trainee trainee = db.Trainees.Find(id);
             if (trainee == null)

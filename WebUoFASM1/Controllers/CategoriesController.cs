@@ -23,7 +23,7 @@ namespace WebUoFASM1.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
             Category category = db.Categories.Find(id);
             if (category == null)
@@ -58,7 +58,7 @@ namespace WebUoFASM1.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
             Category category = db.Categories.Find(id);
             if (category == null)
@@ -86,7 +86,7 @@ namespace WebUoFASM1.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
             Category category = db.Categories.Find(id);
             if (category == null)
