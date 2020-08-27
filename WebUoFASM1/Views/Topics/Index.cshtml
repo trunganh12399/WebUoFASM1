@@ -30,7 +30,7 @@
     @if (Request.IsAuthenticated && User.IsInRole("Staff"))
     {
         <p>
-            @Html.ActionLink("Create New", "Create")
+            @Html.ActionLink("Create & Assign Trainer To Topic", "Assign")
         </p>
     }
 

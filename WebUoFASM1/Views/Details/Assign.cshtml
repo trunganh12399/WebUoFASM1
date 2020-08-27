@@ -1,15 +1,15 @@
 ﻿@model WebUoFASM1.Models.Detail
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Assign";
 }
 
-<h2>Assign Topic to Course</h2>
+<h2>Assign</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
-
+    
     <div class="form-horizontal">
         <h4>Detail</h4>
         <hr />
@@ -41,7 +41,3 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}

@@ -21,7 +21,7 @@ namespace WebUoFASM1.Controllers
         }
 
         [Authorize(Roles = "Staff")]
-        public ActionResult Create()
+        public ActionResult Assign()
         {
             ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name");
             ViewBag.TopicId = new SelectList(db.Topics, "Id", "Name");
@@ -30,7 +30,7 @@ namespace WebUoFASM1.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,CourseId,TopicId")] Detail detail)
+        public ActionResult Assign([Bind(Include = "Id,CourseId,TopicId")] Detail detail)
         {
             if (ModelState.IsValid)
             {

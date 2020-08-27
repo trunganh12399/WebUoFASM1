@@ -1,11 +1,10 @@
 ﻿@model WebUoFASM1.Models.Topic
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Assign";
 }
 
-<h2>Create</h2>
-
+<h2>Assign</h2>
 
 @using (Html.BeginForm()) 
 {
@@ -50,7 +49,3 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}

@@ -387,16 +387,13 @@
     <Content Include="Views\Categories\Edit.cshtml" />
     <Content Include="Views\Categories\Delete.cshtml" />
     <Content Include="Views\Details\Index.cshtml" />
-    <Content Include="Views\Details\Create.cshtml" />
     <Content Include="Views\Details\Edit.cshtml" />
     <Content Include="Views\Details\Delete.cshtml" />
     <Content Include="Views\Enrollments\Index.cshtml" />
-    <Content Include="Views\Enrollments\Create.cshtml" />
     <Content Include="Views\Enrollments\Edit.cshtml" />
     <Content Include="Views\Enrollments\Delete.cshtml" />
     <Content Include="Views\Topics\Index.cshtml" />
     <Content Include="Views\Topics\Details.cshtml" />
-    <Content Include="Views\Topics\Create.cshtml" />
     <Content Include="Views\Topics\Edit.cshtml" />
     <Content Include="Views\Topics\Delete.cshtml" />
     <Content Include="Views\Trainees\Index.cshtml" />
@@ -422,6 +419,9 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\Enrollments\Assign.cshtml" />
+    <Content Include="Views\Topics\Assign.cshtml" />
+    <Content Include="Views\Details\Assign.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

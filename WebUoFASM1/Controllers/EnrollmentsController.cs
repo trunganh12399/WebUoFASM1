@@ -21,22 +21,7 @@ namespace WebUoFASM1.Controllers
         }
 
         [Authorize(Roles = "Staff")]
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            }
-            Enrollment enrollment = db.Enrollments.Find(id);
-            if (enrollment == null)
-            {
-                return HttpNotFound();
-            }
-            return View(enrollment);
-        }
-
-        [Authorize(Roles = "Staff")]
-        public ActionResult Create()
+        public ActionResult Assign()
         {
             ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name");
             ViewBag.TraineeId = new SelectList(db.Trainees, "Id", "Name");
@@ -45,7 +30,7 @@ namespace WebUoFASM1.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,CourseId,TraineeId")] Enrollment enrollment)
+        public ActionResult Assign([Bind(Include = "Id,CourseId,TraineeId")] Enrollment enrollment)
         {
             if (ModelState.IsValid)
             {
