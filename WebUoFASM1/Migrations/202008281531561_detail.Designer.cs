@@ -7,13 +7,13 @@ namespace WebUoFASM1.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.0")]
-    public sealed partial class addabcxyz : IMigrationMetadata
+    public sealed partial class detail : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(addabcxyz));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(detail));
         
         string IMigrationMetadata.Id
         {
-            get { return "202008281256314_addabcxyz"; }
+            get { return "202008281531561_detail"; }
         }
         
         string IMigrationMetadata.Source

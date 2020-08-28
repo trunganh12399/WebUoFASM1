@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -6,42 +7,79 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using WebUoFASM1.Models;
+using WebUoFASM1.ViewModels;
 
 namespace WebUoFASM1.Controllers
 {
     public class DetailsController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationDbContext _context;
 
-        [Authorize(Roles = "Staff, Trainer")]
-        public ActionResult Index()
+        public DetailsController()
         {
-            var details = db.Details.Include(d => d.Course).Include(d => d.Topic);
-            return View(details.ToList());
+            _context = new ApplicationDbContext();
         }
 
-        [Authorize(Roles = "Staff")]
+        public ActionResult Index()
+        {
+            if (User.IsInRole("Staff"))
+            {
+                var details = _context.Details.Include(t => t.Course).Include(t => t.Topic).Include(t => t.Trainer).ToList();
+                return View(details);
+            }
+            if (User.IsInRole("Trainer"))
+            {
+                var trainerId = User.Identity.GetUserId();
+                var Res = _context.Details.Where(e => e.TrainerId == trainerId).Include(t => t.Course).Include(t => t.Topic).ToList();
+                return View(Res);
+            }
+            return View("Login");
+        }
+
         public ActionResult Assign()
         {
-            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name");
-            ViewBag.TopicId = new SelectList(db.Topics, "Id", "Name");
-            return View();
+            var role = (from r in _context.Roles where r.Name.Contains("Trainer") select r).FirstOrDefault();
+            var users = _context.Users.Where(x => x.Roles.Select(y => y.RoleId).Contains(role.Id)).ToList();
+
+            var courses = _context.Courses.ToList();
+            var topics = _context.Topics.ToList();
+
+            var TrainerTopicVM = new DetailViewModel()
+            {
+                Courses = courses,
+                Topics = topics,
+                Trainers = users,
+                Detail = new Detail()
+            };
+
+            return View(TrainerTopicVM);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Assign([Bind(Include = "Id,CourseId,TopicId")] Detail detail)
+        public ActionResult Assign(DetailViewModel model)
         {
+            var role = (from r in _context.Roles where r.Name.Contains("Trainer") select r).FirstOrDefault();
+            var users = _context.Users.Where(x => x.Roles.Select(y => y.RoleId).Contains(role.Id)).ToList();
+
+            var courses = _context.Courses.ToList();
+            var topics = _context.Topics.ToList();
+
             if (ModelState.IsValid)
             {
-                db.Details.Add(detail);
-                db.SaveChanges();
+                _context.Details.Add(model.Detail);
+                _context.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name", detail.CourseId);
-            ViewBag.TopicId = new SelectList(db.Topics, "Id", "Name", detail.TopicId);
-            return View(detail);
+            var TrainerTopicVM = new DetailViewModel()
+            {
+                Courses = courses,
+                Topics = topics,
+                Trainers = users,
+                Detail = new Detail()
+            };
+
+            return View(TrainerTopicVM);
         }
 
         [Authorize(Roles = "Staff")]
@@ -51,13 +89,13 @@ namespace WebUoFASM1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
-            Detail detail = db.Details.Find(id);
+            Detail detail = _context.Details.Find(id);
             if (detail == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name", detail.CourseId);
-            ViewBag.TopicId = new SelectList(db.Topics, "Id", "Name", detail.TopicId);
+            ViewBag.CourseId = new SelectList(_context.Courses, "Id", "Name", detail.CourseId);
+            ViewBag.TopicId = new SelectList(_context.Topics, "Id", "Name", detail.TopicId);
             return View(detail);
         }
 
@@ -67,12 +105,12 @@ namespace WebUoFASM1.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(detail).State = EntityState.Modified;
-                db.SaveChanges();
+                _context.Entry(detail).State = EntityState.Modified;
+                _context.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name", detail.CourseId);
-            ViewBag.TopicId = new SelectList(db.Topics, "Id", "Name", detail.TopicId);
+            ViewBag.CourseId = new SelectList(_context.Courses, "Id", "Name", detail.CourseId);
+            ViewBag.TopicId = new SelectList(_context.Topics, "Id", "Name", detail.TopicId);
             return View(detail);
         }
 
@@ -83,7 +121,7 @@ namespace WebUoFASM1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
-            Detail detail = db.Details.Find(id);
+            Detail detail = _context.Details.Find(id);
             if (detail == null)
             {
                 return HttpNotFound();
@@ -95,9 +133,9 @@ namespace WebUoFASM1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Detail detail = db.Details.Find(id);
-            db.Details.Remove(detail);
-            db.SaveChanges();
+            Detail detail = _context.Details.Find(id);
+            _context.Details.Remove(detail);
+            _context.SaveChanges();
             return RedirectToAction("Index");
         }
     }

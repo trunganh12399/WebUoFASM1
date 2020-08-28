@@ -218,10 +218,6 @@
     <Compile Include="Migrations\202008280224515_New.designer.cs">
       <DependentUpon>202008280224515_New.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202008280239407_Add5.cs" />
-    <Compile Include="Migrations\202008280239407_Add5.designer.cs">
-      <DependentUpon>202008280239407_Add5.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\202008280254509_Addnewfortrainee.cs" />
     <Compile Include="Migrations\202008280254509_Addnewfortrainee.designer.cs">
       <DependentUpon>202008280254509_Addnewfortrainee.cs</DependentUpon>
@@ -234,14 +230,6 @@
     <Compile Include="Migrations\202008281049231_trainee.designer.cs">
       <DependentUpon>202008281049231_trainee.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202008281130041_fixkk.cs" />
-    <Compile Include="Migrations\202008281130041_fixkk.designer.cs">
-      <DependentUpon>202008281130041_fixkk.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202008281256314_addabcxyz.cs" />
-    <Compile Include="Migrations\202008281256314_addabcxyz.designer.cs">
-      <DependentUpon>202008281256314_addabcxyz.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\202008281314475_uptrainee.cs" />
     <Compile Include="Migrations\202008281314475_uptrainee.designer.cs">
       <DependentUpon>202008281314475_uptrainee.cs</DependentUpon>
@@ -253,6 +241,10 @@
     <Compile Include="Migrations\202008281358068_lanthuen.cs" />
     <Compile Include="Migrations\202008281358068_lanthuen.designer.cs">
       <DependentUpon>202008281358068_lanthuen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008281531561_detail.cs" />
+    <Compile Include="Migrations\202008281531561_detail.designer.cs">
+      <DependentUpon>202008281531561_detail.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -504,9 +496,6 @@
     <EmbeddedResource Include="Migrations\202008280224515_New.resx">
       <DependentUpon>202008280224515_New.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202008280239407_Add5.resx">
-      <DependentUpon>202008280239407_Add5.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202008280254509_Addnewfortrainee.resx">
       <DependentUpon>202008280254509_Addnewfortrainee.cs</DependentUpon>
     </EmbeddedResource>
@@ -516,12 +505,6 @@
     <EmbeddedResource Include="Migrations\202008281049231_trainee.resx">
       <DependentUpon>202008281049231_trainee.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202008281130041_fixkk.resx">
-      <DependentUpon>202008281130041_fixkk.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202008281256314_addabcxyz.resx">
-      <DependentUpon>202008281256314_addabcxyz.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202008281314475_uptrainee.resx">
       <DependentUpon>202008281314475_uptrainee.cs</DependentUpon>
     </EmbeddedResource>
@@ -530,6 +513,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202008281358068_lanthuen.resx">
       <DependentUpon>202008281358068_lanthuen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008281531561_detail.resx">
+      <DependentUpon>202008281531561_detail.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
