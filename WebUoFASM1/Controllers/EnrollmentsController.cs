@@ -12,8 +12,6 @@ namespace WebUoFASM1.Controllers
 {
     public class EnrollmentsController : Controller
     {
-        // GET: AssignTraineeToCourses
-
         private ApplicationDbContext _context;
 
         public EnrollmentsController()

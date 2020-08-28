@@ -9,6 +9,7 @@ namespace WebUoFASM1.Models
 {
     public class Detail
     {
+        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -22,5 +23,7 @@ namespace WebUoFASM1.Models
         public int TopicId { get; set; }
 
         public Topic Topic { get; set; }
+        public ApplicationUser Trainer { get; set; }
+        public string TrainerId { get; set; }
     }
 }

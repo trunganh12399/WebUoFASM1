@@ -23,9 +23,9 @@ namespace WebUoFASM1.Models
 
         public DbSet<Topic> Topics { get; set; }
 
-        public DbSet<Trainee> Trainees { get; set; }
+        public DbSet<TraineeInfo> TraineeInfos { get; set; }
 
-        public DbSet<Trainer> Trainers { get; set; }
+        public DbSet<TrainerInfo> TrainerInfos { get; set; }
 
         public DbSet<RoleViewModel> RoleViewModels { get; set; }
         public DbSet<AssignTrainerToTopic> AssignTrainerToTopics { get; set; }

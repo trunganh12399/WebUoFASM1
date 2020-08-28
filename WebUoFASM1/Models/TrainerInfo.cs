@@ -7,14 +7,17 @@ using System.Web;
 
 namespace WebUoFASM1.Models
 {
-    public class Trainee
+    public class TrainerInfo
     {
-        public virtual ApplicationUser ApplicationUser { get; set; }
+        [Key]
+        public virtual ApplicationUser Trainer { get; set; }
+
+        public string TrainerId { get; set; }
         public int Id { get; set; }
-        public string UserId { get; set; }
+
+        public string Name { get; set; }
         public string Email { get; set; }
-        public string FullName { get; set; }
-        public string Education { get; set; }
+        public string Type { get; set; }
 
         public string PhoneNumber { get; set; }
     }
