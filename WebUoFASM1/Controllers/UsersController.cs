@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -58,6 +59,71 @@ namespace WebUoFASM1.Controllers
 
             var model = new GroupedUserViewModel { Staffs = Staffs, Trainees = Trainees, Trainers = Trainers, };
             return View(model);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin,Staff")]
+        public ActionResult Edit(string id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+            var appUser = _context.Users.Find(id);
+            if (appUser == null)
+            {
+                return HttpNotFound();
+            }
+            return View(appUser);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public ActionResult Edit(ApplicationUser user)
+        {
+            var userInDb = _context.Users.Find(user.Id);
+
+            if (userInDb == null)
+            {
+                return View(user);
+            }
+
+            if (ModelState.IsValid)
+            {
+                userInDb.UserName = user.UserName;
+                userInDb.PhoneNumber = user.PhoneNumber;
+                userInDb.Email = user.Email;
+
+                _context.Users.AddOrUpdate(userInDb);
+                _context.SaveChanges();
+
+                return RedirectToAction("UserPage");
+            }
+            return View(user);
+        }
+
+        [Authorize(Roles = "Admin")]
+        public ActionResult Delete(ApplicationUser user)
+        {
+            var userInDb = _context.Users.Find(user.Id);
+
+            if (userInDb == null)
+            {
+                return View(user);
+            }
+
+            if (ModelState.IsValid)
+            {
+                userInDb.UserName = user.UserName;
+                userInDb.PhoneNumber = user.PhoneNumber;
+                userInDb.Email = user.Email;
+
+                _context.Users.Remove(userInDb);
+                _context.SaveChanges();
+
+                return RedirectToAction("UserPage");
+            }
+            return View(user);
         }
     }
 }

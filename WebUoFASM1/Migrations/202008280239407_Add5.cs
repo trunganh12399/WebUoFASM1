@@ -1,9 +1,9 @@
-namespace WebUoFASM1.Migrations
+﻿namespace WebUoFASM1.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Fix : DbMigration
+    public partial class Add5 : DbMigration
     {
         public override void Up()
         {

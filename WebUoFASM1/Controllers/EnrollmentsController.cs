@@ -1,107 +1,88 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using WebUoFASM1.Models;
+using WebUoFASM1.ViewModels;
 
 namespace WebUoFASM1.Controllers
 {
-    [Authorize(Roles = "Staff, Trainee")]
     public class EnrollmentsController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        // GET: AssignTraineeToCourses
+
+        private ApplicationDbContext _context;
+
+        public EnrollmentsController()
+        {
+            _context = new ApplicationDbContext();
+        }
 
         public ActionResult Index()
         {
-            var enrollments = db.Enrollments.Include(e => e.Course).Include(e => e.Trainee).ToList();
-            return View(enrollments.ToList());
+            if (User.IsInRole("Staff"))
+            {
+                var traineecourses = _context.Enrollments.Include(t => t.Course).Include(t => t.Trainee).ToList();
+                return View(traineecourses);
+            }
+            if (User.IsInRole("Trainee"))
+            {
+                var traineeId = User.Identity.GetUserId();
+                var Res = _context.Enrollments.Where(e => e.TraineeId == traineeId).Include(t => t.Course).ToList();
+                return View(Res);
+            }
+            return View("Login");
         }
 
-        [Authorize(Roles = "Staff")]
         public ActionResult Assign()
         {
-            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name");
-            ViewBag.TraineeId = new SelectList(db.Trainees, "Id", "Name");
-            return View();
+            //get trainer
+            var role = (from r in _context.Roles where r.Name.Contains("Trainee") select r).FirstOrDefault();
+            var users = _context.Users.Where(x => x.Roles.Select(y => y.RoleId).Contains(role.Id)).ToList();
+
+            //get topic
+
+            var courses = _context.Courses.ToList();
+
+            var TrainerTopicVM = new AssignTraineeToCourseViewModel()
+            {
+                Courses = courses,
+                Trainees = users,
+                Enrollment = new Enrollment()
+            };
+
+            return View(TrainerTopicVM);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Assign([Bind(Include = "Id,CourseId,TraineeId")] Enrollment enrollment)
+        public ActionResult Assign(AssignTraineeToCourseViewModel model)
         {
+            //get trainer
+            var role = (from r in _context.Roles where r.Name.Contains("Trainee") select r).FirstOrDefault();
+            var users = _context.Users.Where(x => x.Roles.Select(y => y.RoleId).Contains(role.Id)).ToList();
+
+            //get topic
+
+            var courses = _context.Courses.ToList();
+
             if (ModelState.IsValid)
             {
-                db.Enrollments.Add(enrollment);
-                db.SaveChanges();
+                _context.Enrollments.Add(model.Enrollment);
+                _context.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name", enrollment.CourseId);
-            ViewBag.TraineeId = new SelectList(db.Trainees, "Id", "Name", enrollment.TraineeId);
-            return View(enrollment);
-        }
+            var TrainerTopicVM = new AssignTraineeToCourseViewModel()
+            {
+                Courses = courses,
+                Trainees = users,
+                Enrollment = new Enrollment()
+            };
 
-        [Authorize(Roles = "Staff")]
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            }
-            Enrollment enrollment = db.Enrollments.Find(id);
-            if (enrollment == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name", enrollment.CourseId);
-            ViewBag.TraineeId = new SelectList(db.Trainees, "Id", "Name", enrollment.TraineeId);
-            return View(enrollment);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,CourseId,TraineeId")] Enrollment enrollment)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(enrollment).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name", enrollment.CourseId);
-            ViewBag.TraineeId = new SelectList(db.Trainees, "Id", "Name", enrollment.TraineeId);
-            return View(enrollment);
-        }
-
-        [Authorize(Roles = "Staff")]
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            }
-            Enrollment enrollment = db.Enrollments.Find(id);
-            if (enrollment == null)
-            {
-                return HttpNotFound();
-            }
-            return View(enrollment);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            {
-                Enrollment enrollment = db.Enrollments.Find(id);
-                db.Enrollments.Remove(enrollment);
-                db.SaveChanges();
-            }
-
-            return RedirectToAction("Index");
+            return View(TrainerTopicVM);
         }
     }
 }

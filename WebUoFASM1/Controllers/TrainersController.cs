@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -11,22 +12,22 @@ namespace WebUoFASM1.Controllers
 {
     public class TrainersController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationDbContext _context = new ApplicationDbContext();
 
-        [Authorize(Roles = "Staff, Trainer")]
+        // GET: Trainers
         public ActionResult Index()
         {
-            return View(db.Trainers.ToList());
+            return View(_context.Trainers.ToList());
         }
 
-        [Authorize(Roles = "Staff, Trainer")]
-        public ActionResult Details(int? id)
+        // GET: Trainers/Details/5
+        public ActionResult Details(string id)
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Trainer trainer = db.Trainers.Find(id);
+            Trainer trainer = _context.Trainers.Find(id);
             if (trainer == null)
             {
                 return HttpNotFound();
@@ -34,34 +35,35 @@ namespace WebUoFASM1.Controllers
             return View(trainer);
         }
 
-        [Authorize(Roles = "Staff")]
+        // GET: Trainers/Create
         public ActionResult Create()
         {
             return View();
         }
 
+        // POST: Trainers/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Email,Type,Phone,UserName")] Trainer trainer)
+        public ActionResult Create(Trainer trainer)
         {
             if (ModelState.IsValid)
             {
-                db.Trainers.Add(trainer);
-                db.SaveChanges();
+                _context.Trainers.Add(trainer);
+                _context.SaveChanges();
                 return RedirectToAction("Index");
             }
 
             return View(trainer);
         }
 
-        [Authorize(Roles = "Staff, Trainer")]
-        public ActionResult Edit(int? id)
+        //GET: Trainers/Edit/5
+        public ActionResult Edit(string id)
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Trainer trainer = db.Trainers.Find(id);
+            var trainer = _context.Users.FirstOrDefault(p => p.Id == id);
             if (trainer == null)
             {
                 return HttpNotFound();
@@ -69,42 +71,57 @@ namespace WebUoFASM1.Controllers
             return View(trainer);
         }
 
+        //POST: Trainers/Edit/5
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Email,Type,Phone,UserName")] Trainer trainer)
+        public ActionResult Edit(ApplicationUser user)
         {
+            var userInDb = _context.Users.Find(user.Id);
+
+            if (userInDb == null)
+            {
+                return View(user);
+            }
+
             if (ModelState.IsValid)
             {
-                db.Entry(trainer).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                userInDb.FullName = user.FullName;
+
+                userInDb.PhoneNumber = user.PhoneNumber;
+                userInDb.Email = user.Email;
+
+                _context.Users.AddOrUpdate(userInDb);
+                _context.SaveChanges();
+
+                return RedirectToAction("Index", "ManagerStaffViewModels");
             }
-            return View(trainer);
+            return View(user);
         }
 
-        [Authorize(Roles = "Staff")]
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(ApplicationUser user)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            }
-            Trainer trainer = db.Trainers.Find(id);
-            if (trainer == null)
-            {
-                return HttpNotFound();
-            }
-            return View(trainer);
-        }
+            var userInDb = _context.Users.Find(user.Id);
 
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Trainer trainer = db.Trainers.Find(id);
-            db.Trainers.Remove(trainer);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (userInDb == null)
+            {
+                return View(user);
+            }
+
+            if (ModelState.IsValid)
+            {
+                userInDb.UserName = user.UserName;
+                userInDb.FullName = user.FullName;
+
+                userInDb.PhoneNumber = user.PhoneNumber;
+                userInDb.Email = user.Email;
+
+                _context.Users.Remove(userInDb);
+                _context.SaveChanges();
+
+                return RedirectToAction("Index", "ManagerStaffViewModels");
+            }
+            return View(user);
         }
     }
 }

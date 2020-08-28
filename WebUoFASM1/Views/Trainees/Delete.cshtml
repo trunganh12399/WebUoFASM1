@@ -1,4 +1,4 @@
-﻿@model WebUoFASM1.Models.Trainee
+﻿@model WebUoFASM1.Models.ApplicationUser
 
 @{
     ViewBag.Title = "Delete";
@@ -12,14 +12,6 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(model => model.Email)
         </dt>
 
@@ -28,19 +20,18 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Education)
+            @Html.DisplayNameFor(model => model.PhoneNumber)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Education)
+            @Html.DisplayFor(model => model.PhoneNumber)
         </dd>
-
         <dt>
-            @Html.DisplayNameFor(model => model.Phone)
+            @Html.DisplayNameFor(model => model.FullName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Phone)
+            @Html.DisplayFor(model => model.FullName)
         </dd>
     </dl>
 

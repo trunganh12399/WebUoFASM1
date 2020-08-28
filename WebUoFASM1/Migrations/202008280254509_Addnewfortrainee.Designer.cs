@@ -7,13 +7,13 @@ namespace WebUoFASM1.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.0")]
-    public sealed partial class fix1 : IMigrationMetadata
+    public sealed partial class Addnewfortrainee : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(fix1));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Addnewfortrainee));
         
         string IMigrationMetadata.Id
         {
-            get { return "202008262317225_fix1"; }
+            get { return "202008280254509_Addnewfortrainee"; }
         }
         
         string IMigrationMetadata.Source

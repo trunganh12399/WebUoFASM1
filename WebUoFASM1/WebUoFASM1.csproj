@@ -171,10 +171,11 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\EnrollmentsController.cs" />
+    <Compile Include="Controllers\AssignTrainerToTopicsController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\CoursesController.cs" />
     <Compile Include="Controllers\DetailsController.cs" />
-    <Compile Include="Controllers\EnrollmentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
@@ -201,30 +202,53 @@
     <Compile Include="Migrations\202008261101428_Add2.Designer.cs">
       <DependentUpon>202008261101428_Add2.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202008261244201_Fix.cs" />
-    <Compile Include="Migrations\202008261244201_Fix.Designer.cs">
-      <DependentUpon>202008261244201_Fix.cs</DependentUpon>
+    <Compile Include="Migrations\202008280112068_Fixn+1.cs" />
+    <Compile Include="Migrations\202008280112068_Fixn+1.designer.cs">
+      <DependentUpon>202008280112068_Fixn+1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202008262317225_fix1.cs" />
-    <Compile Include="Migrations\202008262317225_fix1.designer.cs">
-      <DependentUpon>202008262317225_fix1.cs</DependentUpon>
+    <Compile Include="Migrations\202008280156330_UpdateAssign.cs" />
+    <Compile Include="Migrations\202008280156330_UpdateAssign.designer.cs">
+      <DependentUpon>202008280156330_UpdateAssign.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008280205352_Drop.cs" />
+    <Compile Include="Migrations\202008280205352_Drop.designer.cs">
+      <DependentUpon>202008280205352_Drop.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008280224515_New.cs" />
+    <Compile Include="Migrations\202008280224515_New.designer.cs">
+      <DependentUpon>202008280224515_New.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008280239407_Add5.cs" />
+    <Compile Include="Migrations\202008280239407_Add5.designer.cs">
+      <DependentUpon>202008280239407_Add5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008280254509_Addnewfortrainee.cs" />
+    <Compile Include="Migrations\202008280254509_Addnewfortrainee.designer.cs">
+      <DependentUpon>202008280254509_Addnewfortrainee.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008280550151_Fix1.cs" />
+    <Compile Include="Migrations\202008280550151_Fix1.designer.cs">
+      <DependentUpon>202008280550151_Fix1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
+    <Compile Include="Models\AssignTrainerToTopic.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Course.cs" />
     <Compile Include="Models\Detail.cs" />
-    <Compile Include="Models\Enrollment.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\RoleViewModel.cs" />
     <Compile Include="Models\Topic.cs" />
     <Compile Include="Models\Trainee.cs" />
+    <Compile Include="Models\Enrollment.cs" />
     <Compile Include="Models\Trainer.cs" />
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\AssignTraineeToCourseViewModel.cs" />
+    <Compile Include="ViewModels\AssignTrainerToTopicViewmodel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />
@@ -389,23 +413,10 @@
     <Content Include="Views\Details\Index.cshtml" />
     <Content Include="Views\Details\Edit.cshtml" />
     <Content Include="Views\Details\Delete.cshtml" />
-    <Content Include="Views\Enrollments\Index.cshtml" />
-    <Content Include="Views\Enrollments\Edit.cshtml" />
-    <Content Include="Views\Enrollments\Delete.cshtml" />
     <Content Include="Views\Topics\Index.cshtml" />
     <Content Include="Views\Topics\Details.cshtml" />
     <Content Include="Views\Topics\Edit.cshtml" />
     <Content Include="Views\Topics\Delete.cshtml" />
-    <Content Include="Views\Trainees\Index.cshtml" />
-    <Content Include="Views\Trainees\Details.cshtml" />
-    <Content Include="Views\Trainees\Create.cshtml" />
-    <Content Include="Views\Trainees\Edit.cshtml" />
-    <Content Include="Views\Trainees\Delete.cshtml" />
-    <Content Include="Views\Trainers\Index.cshtml" />
-    <Content Include="Views\Trainers\Details.cshtml" />
-    <Content Include="Views\Trainers\Create.cshtml" />
-    <Content Include="Views\Trainers\Edit.cshtml" />
-    <Content Include="Views\Trainers\Delete.cshtml" />
     <Content Include="Views\Roles\Index.cshtml" />
     <Content Include="Views\Roles\Create.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
@@ -419,9 +430,25 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
-    <Content Include="Views\Enrollments\Assign.cshtml" />
     <Content Include="Views\Topics\Assign.cshtml" />
     <Content Include="Views\Details\Assign.cshtml" />
+    <Content Include="Views\Users\Edit.cshtml" />
+    <Content Include="Views\Users\Delete.cshtml" />
+    <Content Include="Views\AssignTrainerToTopics\Index.cshtml" />
+    <Content Include="Views\Enrollments\Index.cshtml" />
+    <Content Include="Views\Enrollments\Assign.cshtml" />
+    <Content Include="Views\Trainees\Index.cshtml" />
+    <Content Include="Views\Trainees\Details.cshtml" />
+    <Content Include="Views\Trainees\Create.cshtml" />
+    <Content Include="Views\Trainees\Edit.cshtml" />
+    <Content Include="Views\Trainees\Delete.cshtml" />
+    <Content Include="Views\Trainers\Index.cshtml" />
+    <Content Include="Views\Trainers\Details.cshtml" />
+    <Content Include="Views\Trainers\Create.cshtml" />
+    <Content Include="Views\Trainers\Edit.cshtml" />
+    <Content Include="Views\Trainers\Delete.cshtml" />
+    <Content Include="Views\AssignTrainerToTopics\Assign.cshtml" />
+    <Content Include="Views\Topics\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -444,11 +471,26 @@
     <EmbeddedResource Include="Migrations\202008261101428_Add2.resx">
       <DependentUpon>202008261101428_Add2.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202008261244201_Fix.resx">
-      <DependentUpon>202008261244201_Fix.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202008280112068_Fixn+1.resx">
+      <DependentUpon>202008280112068_Fixn+1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202008262317225_fix1.resx">
-      <DependentUpon>202008262317225_fix1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202008280156330_UpdateAssign.resx">
+      <DependentUpon>202008280156330_UpdateAssign.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008280205352_Drop.resx">
+      <DependentUpon>202008280205352_Drop.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008280224515_New.resx">
+      <DependentUpon>202008280224515_New.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008280239407_Add5.resx">
+      <DependentUpon>202008280239407_Add5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008280254509_Addnewfortrainee.resx">
+      <DependentUpon>202008280254509_Addnewfortrainee.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008280550151_Fix1.resx">
+      <DependentUpon>202008280550151_Fix1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

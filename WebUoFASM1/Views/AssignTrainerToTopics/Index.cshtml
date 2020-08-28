@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WebUoFASM1.Models.Enrollment>
+﻿@model IEnumerable<WebUoFASM1.Models.AssignTrainerToTopic>
 
 @{
     ViewBag.Title = "Index";
@@ -8,16 +8,15 @@
 @if (User.IsInRole("Staff"))
 {
     <p>
-        @Html.ActionLink("Assign Trainee to Course", "Assign")
+        @Html.ActionLink("Assign Trainer To Topic", "Assign")
     </p>
-
     <table class="table">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Trainee)
+                @Html.DisplayNameFor(model => model.Trainer)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Course)
+                @Html.DisplayNameFor(model => model.Topic)
             </th>
             <th></th>
         </tr>
@@ -26,20 +25,20 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Trainee.UserName)
+                    @Html.DisplayFor(modelItem => item.Trainer.UserName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Course.Name)
+                    @Html.DisplayFor(modelItem => item.Topic.Name)
                 </td>
             </tr>
         }
     </table>
 }
-@if (User.IsInRole("Trainee"))
+@if (User.IsInRole("Trainer"))
 {<table class="table">
         <tr>
             <th>
-                @Html.DisplayNameFor(item => item.Course)
+                @Html.DisplayNameFor(item => item.Topic)
             </th>
             <th></th>
         </tr>
@@ -47,7 +46,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Course.Name)
+                    @Html.DisplayFor(modelItem => item.Topic.Name)
                 </td>
             </tr>
         }

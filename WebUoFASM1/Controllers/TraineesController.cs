@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -10,22 +11,19 @@ using WebUoFASM1.Models;
 namespace WebUoFASM1.Controllers
 {
     public class TraineesController : Controller
-
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        [Authorize(Roles = "Staff, Trainee")]
         public ActionResult Index()
         {
             return View(db.Trainees.ToList());
         }
 
-        [Authorize(Roles = "Staff, Trainee")]
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Trainee trainee = db.Trainees.Find(id);
             if (trainee == null)
@@ -35,7 +33,6 @@ namespace WebUoFASM1.Controllers
             return View(trainee);
         }
 
-        [Authorize(Roles = "Staff")]
         public ActionResult Create()
         {
             return View();
@@ -43,7 +40,7 @@ namespace WebUoFASM1.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Email,Education,Phone,UserName")] Trainee trainee)
+        public ActionResult Create(Trainee trainee)
         {
             if (ModelState.IsValid)
             {
@@ -55,14 +52,14 @@ namespace WebUoFASM1.Controllers
             return View(trainee);
         }
 
-        [Authorize(Roles = "Staff")]
-        public ActionResult Edit(int? id)
+        // GET: Trainees/Edit/5
+        public ActionResult Edit(string id)
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Trainee trainee = db.Trainees.Find(id);
+            var trainee = db.Users.FirstOrDefault(p => p.Id == id);
             if (trainee == null)
             {
                 return HttpNotFound();
@@ -72,40 +69,54 @@ namespace WebUoFASM1.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Email,Education,Phone,UserName")] Trainee trainee)
+        public ActionResult Edit(ApplicationUser user)
         {
+            var userInDb = db.Users.Find(user.Id);
+
+            if (userInDb == null)
+            {
+                return View(user);
+            }
+
             if (ModelState.IsValid)
             {
-                db.Entry(trainee).State = EntityState.Modified;
+                userInDb.FullName = user.FullName;
+
+                userInDb.PhoneNumber = user.PhoneNumber;
+                userInDb.Email = user.Email;
+
+                db.Users.AddOrUpdate(userInDb);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+
+                return RedirectToAction("Index", "Users");
             }
-            return View(trainee);
+            return View(user);
         }
 
-        [Authorize(Roles = "Staff")]
-        public ActionResult Delete(int? id)
+        // GET: Trainees/Delete/5
+        public ActionResult Delete(ApplicationUser user)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            }
-            Trainee trainee = db.Trainees.Find(id);
-            if (trainee == null)
-            {
-                return HttpNotFound();
-            }
-            return View(trainee);
-        }
+            var userInDb = db.Users.Find(user.Id);
 
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Trainee trainee = db.Trainees.Find(id);
-            db.Trainees.Remove(trainee);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (userInDb == null)
+            {
+                return View(user);
+            }
+
+            if (ModelState.IsValid)
+            {
+                userInDb.UserName = user.UserName;
+                userInDb.FullName = user.FullName;
+
+                userInDb.PhoneNumber = user.PhoneNumber;
+                userInDb.Email = user.Email;
+
+                db.Users.Remove(userInDb);
+                db.SaveChanges();
+
+                return RedirectToAction("Index", "Users");
+            }
+            return View(user);
         }
     }
 }

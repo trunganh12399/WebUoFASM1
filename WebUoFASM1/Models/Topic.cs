@@ -18,11 +18,5 @@ namespace WebUoFASM1.Models
         [Required]
         [DisplayName("Topic Description")]
         public string Description { get; set; }
-
-        [Required]
-        [DisplayName("Trainer Name")]
-        public int TrainerId { get; set; }
-
-        public Trainer Trainer { get; set; }
     }
 }

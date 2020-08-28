@@ -9,25 +9,13 @@ namespace WebUoFASM1.Models
 {
     public class Trainee
     {
+        public virtual ApplicationUser ApplicationUser { get; set; }
         public int Id { get; set; }
-
-        [Required]
-        [DisplayName("Trainee Name")]
-        public string Name { get; set; }
-
-        [Required]
-        [DisplayName("Trainee Mail")]
+        public string UserId { get; set; }
         public string Email { get; set; }
-
-        [Required]
-        [DisplayName("Tranee Education")]
+        public string FullName { get; set; }
         public string Education { get; set; }
 
-        [Required]
-        [DisplayName("Traniee Phone")]
-        public string Phone { get; set; }
-
-        public int UserId { get; set; }
-        public ApplicationUser ApplicationUser { get; set; }
+        public string PhoneNumber { get; set; }
     }
 }

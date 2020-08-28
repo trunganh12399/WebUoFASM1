@@ -216,7 +216,7 @@ namespace WebUoFASM1.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return View("Index", "Users");
         }
 
         // GET: /Account/ConfirmEmail
