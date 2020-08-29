@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNet.Identity;
-using System;
-using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using WebUoFASM1.Models;
 using WebUoFASM1.ViewModels;
@@ -21,6 +19,7 @@ namespace WebUoFASM1.Controllers
             _context = new ApplicationDbContext();
         }
 
+        [Authorize(Roles = "Staff, Trainee")]
         public ActionResult Index()
         {
             if (User.IsInRole("Staff"))
@@ -37,23 +36,24 @@ namespace WebUoFASM1.Controllers
             return View("Login");
         }
 
+        [Authorize(Roles = "Staff")]
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TraineeInfo trainee = _context.TraineeInfos.Find(id);
-            if (trainee == null)
+            TraineeInfo traineeInfo = _context.TraineeInfos.Find(id);
+            if (traineeInfo == null)
             {
                 return HttpNotFound();
             }
-            return View(trainee);
+            return View(traineeInfo);
         }
 
-        public ActionResult Create()
+        [Authorize(Roles = "Staff")]
+        public ActionResult Assign()
         {
-            //get trainee
             var role = (from r in _context.Roles where r.Name.Contains("Trainee") select r).FirstOrDefault();
             var users = _context.Users.Where(x => x.Roles.Select(y => y.RoleId).Contains(role.Id)).ToList();
 
@@ -66,10 +66,10 @@ namespace WebUoFASM1.Controllers
             return View(TraineeTopicVM);
         }
 
+        [Authorize(Roles = "Staff")]
         [HttpPost]
-        public ActionResult Create(TraineeViewModel traineeViewModel)
+        public ActionResult Assign(TraineeViewModel traineeViewModel)
         {
-            //get trainer
             var role = (from r in _context.Roles where r.Name.Contains("Trainee") select r).FirstOrDefault();
             var users = _context.Users.Where(x => x.Roles.Select(y => y.RoleId).Contains(role.Id)).ToList();
 
@@ -89,56 +89,73 @@ namespace WebUoFASM1.Controllers
             return View(TraineeTopicVM);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(ApplicationUser user)
+        [Authorize(Roles = "Staff")]
+        public ActionResult Edit()
         {
-            var userInDb = _context.Users.Find(user.Id);
+            var role = (from r in _context.Roles where r.Name.Contains("Trainee") select r).FirstOrDefault();
+            var users = _context.Users.Where(x => x.Roles.Select(y => y.RoleId).Contains(role.Id)).ToList();
 
-            if (userInDb == null)
+            var TraineeTopicVM = new TraineeViewModel()
             {
-                return View(user);
-            }
+                Trainees = users,
+                TraineeInfo = new TraineeInfo()
+            };
 
-            if (ModelState.IsValid)
-            {
-                userInDb.FullName = user.FullName;
-
-                userInDb.PhoneNumber = user.PhoneNumber;
-                userInDb.Email = user.Email;
-
-                _context.Users.AddOrUpdate(userInDb);
-                _context.SaveChanges();
-
-                return RedirectToAction("Index", "Users");
-            }
-            return View(user);
+            return View(TraineeTopicVM);
         }
 
-        // GET: Trainees/Delete/5
-        public ActionResult Delete(ApplicationUser user)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(TraineeViewModel traineeViewModel)
         {
-            var userInDb = _context.Users.Find(user.Id);
+            var role = (from r in _context.Roles where r.Name.Contains("Trainee") select r).FirstOrDefault();
+            var users = _context.Users.Where(x => x.Roles.Select(y => y.RoleId).Contains(role.Id)).ToList();
 
-            if (userInDb == null)
+            var traineeInDb = _context.TraineeInfos.Find(traineeViewModel.TraineeInfo);
+
+            if (traineeInDb == null)
             {
-                return View(user);
+                return View("Index");
             }
 
             if (ModelState.IsValid)
             {
-                userInDb.UserName = user.UserName;
-                userInDb.FullName = user.FullName;
+                traineeInDb.Name = traineeViewModel.TraineeInfo.Name;
+                traineeInDb.PhoneNumber = traineeViewModel.TraineeInfo.PhoneNumber;
+                traineeInDb.Education = traineeViewModel.TraineeInfo.Education;
+                traineeInDb.Email = traineeViewModel.TraineeInfo.Email;
 
-                userInDb.PhoneNumber = user.PhoneNumber;
-                userInDb.Email = user.Email;
-
-                _context.Users.Remove(userInDb);
+                _context.TraineeInfos.AddOrUpdate(traineeInDb);
                 _context.SaveChanges();
 
-                return RedirectToAction("Index", "Users");
+                return RedirectToAction("UsersWithRoles");
             }
-            return View(user);
+            return View("Index");
+        }
+
+        [Authorize(Roles = "Staff")]
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            TraineeInfo traineeInfo = _context.TraineeInfos.Find(id);
+            if (traineeInfo == null)
+            {
+                return HttpNotFound();
+            }
+            return View(traineeInfo);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            TraineeInfo traineeInfo = _context.TraineeInfos.Find(id);
+            _context.TraineeInfos.Remove(traineeInfo);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
     }
 }

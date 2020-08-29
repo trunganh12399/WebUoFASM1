@@ -1,6 +1,5 @@
 ﻿namespace WebUoFASM1.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
 
     public partial class Addnewfortrainee : DbMigration

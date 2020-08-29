@@ -1,8 +1,7 @@
 namespace WebUoFASM1.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class Add1 : DbMigration
     {
         public override void Up()
@@ -16,7 +15,7 @@ namespace WebUoFASM1.Migrations
             AddForeignKey("dbo.Trainers", "ApplicationUser_Id", "dbo.AspNetUsers", "Id");
             AddForeignKey("dbo.Trainees", "ApplicationUser_Id", "dbo.AspNetUsers", "Id");
         }
-        
+
         public override void Down()
         {
             DropForeignKey("dbo.Trainees", "ApplicationUser_Id", "dbo.AspNetUsers");

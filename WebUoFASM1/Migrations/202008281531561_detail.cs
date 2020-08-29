@@ -1,8 +1,7 @@
 ﻿namespace WebUoFASM1.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class detail : DbMigration
     {
         public override void Up()
@@ -11,7 +10,7 @@
             CreateIndex("dbo.Details", "TrainerId");
             AddForeignKey("dbo.Details", "TrainerId", "dbo.AspNetUsers", "Id");
         }
-        
+
         public override void Down()
         {
             DropForeignKey("dbo.Details", "TrainerId", "dbo.AspNetUsers");

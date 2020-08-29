@@ -1,8 +1,7 @@
 ﻿namespace WebUoFASM1.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class lanthuen : DbMigration
     {
         public override void Up()
@@ -13,7 +12,7 @@
             AlterColumn("dbo.TraineeInfoes", "TraineeId", c => c.String(maxLength: 128));
             CreateIndex("dbo.TraineeInfoes", "TraineeId");
         }
-        
+
         public override void Down()
         {
             DropIndex("dbo.TraineeInfoes", new[] { "TraineeId" });

@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNet.Identity;
-using System;
-using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using WebUoFASM1.Models;
 using WebUoFASM1.ViewModels;
@@ -20,6 +18,7 @@ namespace WebUoFASM1.Controllers
             _context = new ApplicationDbContext();
         }
 
+        [Authorize(Roles = "Staff, Trainer")]
         public ActionResult Index()
         {
             if (User.IsInRole("Staff"))
@@ -36,6 +35,7 @@ namespace WebUoFASM1.Controllers
             return View("Login");
         }
 
+        [Authorize(Roles = "Staff")]
         public ActionResult Assign()
         {
             var role = (from r in _context.Roles where r.Name.Contains("Trainer") select r).FirstOrDefault();
@@ -83,35 +83,51 @@ namespace WebUoFASM1.Controllers
         }
 
         [Authorize(Roles = "Staff")]
-        public ActionResult Edit(int? id)
+        public ActionResult Edit()
         {
-            if (id == null)
+            var role = (from r in _context.Roles where r.Name.Contains("Trainer") select r).FirstOrDefault();
+            var users = _context.Users.Where(x => x.Roles.Select(y => y.RoleId).Contains(role.Id)).ToList();
+
+            var courses = _context.Courses.ToList();
+            var topics = _context.Topics.ToList();
+
+            var TrainerTopicVM = new DetailViewModel()
             {
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            }
-            Detail detail = _context.Details.Find(id);
-            if (detail == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.CourseId = new SelectList(_context.Courses, "Id", "Name", detail.CourseId);
-            ViewBag.TopicId = new SelectList(_context.Topics, "Id", "Name", detail.TopicId);
-            return View(detail);
+                Courses = courses,
+                Topics = topics,
+                Trainers = users,
+                Detail = new Detail()
+            };
+
+            return View(TrainerTopicVM);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,CourseId,TopicId")] Detail detail)
+        public ActionResult Edit(DetailViewModel model)
         {
+            var role = (from r in _context.Roles where r.Name.Contains("Trainer") select r).FirstOrDefault();
+            var users = _context.Users.Where(x => x.Roles.Select(y => y.RoleId).Contains(role.Id)).ToList();
+
+            var courses = _context.Courses.ToList();
+            var topics = _context.Topics.ToList();
+
             if (ModelState.IsValid)
             {
-                _context.Entry(detail).State = EntityState.Modified;
+                _context.Details.AddOrUpdate(model.Detail);
                 _context.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.CourseId = new SelectList(_context.Courses, "Id", "Name", detail.CourseId);
-            ViewBag.TopicId = new SelectList(_context.Topics, "Id", "Name", detail.TopicId);
-            return View(detail);
+
+            var TrainerTopicVM = new DetailViewModel()
+            {
+                Courses = courses,
+                Topics = topics,
+                Trainers = users,
+                Detail = new Detail()
+            };
+
+            return View(TrainerTopicVM);
         }
 
         [Authorize(Roles = "Staff")]

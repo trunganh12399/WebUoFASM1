@@ -206,10 +206,6 @@
     <Compile Include="Migrations\202008280112068_Fixn+1.designer.cs">
       <DependentUpon>202008280112068_Fixn+1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202008280156330_UpdateAssign.cs" />
-    <Compile Include="Migrations\202008280156330_UpdateAssign.designer.cs">
-      <DependentUpon>202008280156330_UpdateAssign.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\202008280205352_Drop.cs" />
     <Compile Include="Migrations\202008280205352_Drop.designer.cs">
       <DependentUpon>202008280205352_Drop.cs</DependentUpon>
@@ -458,10 +454,18 @@
     <Content Include="Views\Enrollments\Assign.cshtml" />
     <Content Include="Views\AssignTrainerToTopics\Assign.cshtml" />
     <Content Include="Views\Topics\Create.cshtml" />
-    <Content Include="Views\TraineeInfos\Create.cshtml" />
     <Content Include="Views\TraineeInfos\Index.cshtml" />
+    <Content Include="Views\AssignTrainerToTopics\Edit.cshtml" />
+    <Content Include="Views\AssignTrainerToTopics\Delete.cshtml" />
+    <Content Include="Views\TraineeInfos\Assign.cshtml" />
+    <Content Include="Views\TraineeInfos\Edit.cshtml" />
+    <Content Include="Views\TraineeInfos\Delete.cshtml" />
     <Content Include="Views\TrainerInfos\Index.cshtml" />
-    <Content Include="Views\TrainerInfos\Create.cshtml" />
+    <Content Include="Views\TrainerInfos\Assign.cshtml" />
+    <Content Include="Views\TrainerInfos\Edit.cshtml" />
+    <Content Include="Views\TrainerInfos\Delete.cshtml" />
+    <Content Include="Views\Enrollments\Edit.cshtml" />
+    <Content Include="Views\Enrollments\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -486,9 +490,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202008280112068_Fixn+1.resx">
       <DependentUpon>202008280112068_Fixn+1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202008280156330_UpdateAssign.resx">
-      <DependentUpon>202008280156330_UpdateAssign.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202008280205352_Drop.resx">
       <DependentUpon>202008280205352_Drop.cs</DependentUpon>
