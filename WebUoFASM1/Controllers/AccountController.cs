@@ -178,7 +178,7 @@ namespace WebUoFASM1.Controllers
                 return View();
             }
 
-            return RedirectToAction("Index", "Users");
+            return RedirectToAction("Index");
         }
 
         //
@@ -204,7 +204,7 @@ namespace WebUoFASM1.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Users");
+                    return RedirectToAction("Index");
                 }
                 ViewBag.Name = new SelectList(context.Roles.Where(u => !u.Name.Contains("Admin"))
                                 .ToList(), "Name", "Name");
@@ -212,7 +212,7 @@ namespace WebUoFASM1.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            return RedirectToAction("Index", "Users");
+            return RedirectToAction("Index");
         }
 
         // GET: /Account/ConfirmEmail

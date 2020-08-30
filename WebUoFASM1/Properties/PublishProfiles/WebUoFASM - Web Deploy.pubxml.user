@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAeAiTpUl9TUKuwk5HUi6WWAAAAAACAAAAAAAQZgAAAAEAACAAAACgMDa5YZLQjCtdrDQGYlPjNNnmztcY23w2T02XvnXPyQAAAAAOgAAAAAIAACAAAABVMgytFhYGbm4IzfD2izLDVBTYXrncVwajRbSN+r71foAAAAAT5n2LFzm8nYYbp4w+NFIbhfzzXqD++qmeW2krjQoCu6m7Na6q5z+gLqi+r0qfGjBCIoUAdFhc/Od3TH6bvhyZRfyKOGw1O5kJvnI35281S7fo1bEzTI1V3LFM/eZ4ES+R97jkRdGc3K57BOekMwY2a9BMlDR5OU2A5GIy92W7vEAAAABv2RMXIKbNVo+TG8L7IwHedcSp7XrO92yi40ijXZg4mlfpcpgRzKQkwk4uOwhJT3rZSRFJN97WOe3Fb3bcYo2S</EncryptedPassword>
+  </PropertyGroup>
+  <ItemGroup>
+    <AzureDBConnectionStrings Include="Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=aspnet-WebUoFASM1-20200826041756;Integrated Security=True" />
+    <AzureDBConnectionStrings Include="Data Source=tcp:webuofasm1.database.windows.net,1433;Initial Catalog=WebUoFASM1;User Id=trunganh@webuofasm1;Password=123456" />
+    <AzureDBConnectionStrings Include="Data Source=tcp:webuofasm1.database.windows.net,1433;Initial Catalog=WebUoFASM1_db;User Id=trunganh@webuofasm1;Password=trunganh1" />
+  </ItemGroup>
+</Project>

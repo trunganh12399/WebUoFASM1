@@ -128,7 +128,7 @@ namespace WebUoFASM1.Controllers
                 _context.TrainerInfos.AddOrUpdate(trainerInDb);
                 _context.SaveChanges();
 
-                return RedirectToAction("UsersWithRoles");
+                return RedirectToAction("TrainerInfo");
             }
             return View("Index");
         }

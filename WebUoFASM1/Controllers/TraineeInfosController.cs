@@ -111,7 +111,7 @@ namespace WebUoFASM1.Controllers
             var role = (from r in _context.Roles where r.Name.Contains("Trainee") select r).FirstOrDefault();
             var users = _context.Users.Where(x => x.Roles.Select(y => y.RoleId).Contains(role.Id)).ToList();
 
-            var traineeInDb = _context.TraineeInfos.Find(traineeViewModel.TraineeInfo);
+            var traineeInDb = _context.TraineeInfos.Find(traineeViewModel.TraineeInfo.Id);
 
             if (traineeInDb == null)
             {
@@ -128,7 +128,7 @@ namespace WebUoFASM1.Controllers
                 _context.TraineeInfos.AddOrUpdate(traineeInDb);
                 _context.SaveChanges();
 
-                return RedirectToAction("UsersWithRoles");
+                return RedirectToAction("TraineeInfos");
             }
             return View("Index");
         }
