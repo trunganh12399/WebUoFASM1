@@ -1,0 +1,97 @@
+﻿@model IEnumerable<WebUoFASM1.ViewModels.EditUserViewModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<!DOCTYPE html>
+
+<style>
+    table {
+        font-family: 'Times New Roman 18px';
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+</style>
+
+<body>
+
+    <h2>Manager User</h2>
+
+    @if (Request.IsAuthenticated && User.IsInRole("Staff"))
+    {
+        <p>
+            @Html.ActionLink("Assign", "Assign")
+        </p>
+    }
+
+    <table>
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Role</th>
+            @if (Request.IsAuthenticated && User.IsInRole("Staff"))
+            {
+                <th>Edit</th>
+                <th>Delete</th>
+            }
+            @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+            {
+                <th>Edit</th>
+                <th>Delete</th>
+            }
+        </tr>
+        @foreach (var u in Model)
+        {
+            <tr>
+                <td>@u.Username</td>
+                <td>@u.Email</td>
+                <td>@u.Phone</td>
+
+                <td>@u.Role</td>
+
+                @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+                {
+                    <td>@Html.ActionLink("Edit", "Edit", new { id = u.UserId })</td>
+                    <td>@Html.ActionLink("Delete", "Delete", new { id = u.UserId })</td>
+                }
+                @if (Request.IsAuthenticated && User.IsInRole("Staff"))
+                {
+                    <td>@Html.ActionLink("Edit", "Edit", new { id = u.UserId })</td>
+                    <td>@Html.ActionLink("Delete", "Delete", new { id = u.UserId })</td>
+                }
+            </tr>
+        }
+    </table>
+</body>
+
+<div class="panel-footer">
+    <p class="box-title"><b>Total Users till @String.Format("{0 : dddd, MMMM d, yyyy}", DateTime.Now)  : </b><span class="label label-primary">@Model.Count()</span></p>
+</div>
+
+@section scripts{
+    <script>
+        $(function () {
+            $('#EditUser').DataTable({
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": true
+            });
+        });
+    </script>
+}

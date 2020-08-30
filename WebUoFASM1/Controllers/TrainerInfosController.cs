@@ -24,8 +24,8 @@ namespace WebUoFASM1.Controllers
         {
             if (User.IsInRole("Staff"))
             {
-                var traineecourses = _context.TrainerInfos.Include(t => t.Trainer).ToList();
-                return View(traineecourses);
+                var trainers = _context.TrainerInfos.Include(t => t.Trainer).ToList();
+                return View(trainers);
             }
             if (User.IsInRole("Trainer"))
             {
@@ -57,13 +57,13 @@ namespace WebUoFASM1.Controllers
             var role = (from r in _context.Roles where r.Name.Contains("Trainer") select r).FirstOrDefault();
             var users = _context.Users.Where(x => x.Roles.Select(y => y.RoleId).Contains(role.Id)).ToList();
 
-            var TrainerTopicVM = new TrainerViewModel()
+            var TrainerVM = new TrainerViewModel()
             {
                 Trainers = users,
                 TrainerInfo = new TrainerInfo()
             };
 
-            return View(TrainerTopicVM);
+            return View(TrainerVM);
         }
 
         [Authorize(Roles = "Staff")]
@@ -80,13 +80,13 @@ namespace WebUoFASM1.Controllers
                 return RedirectToAction("Index");
             }
 
-            var TrainerTopicVM = new TrainerViewModel()
+            var TrainerVM = new TrainerViewModel()
             {
                 Trainers = users,
                 TrainerInfo = new TrainerInfo(),
             };
 
-            return View(TrainerTopicVM);
+            return View(TrainerVM);
         }
 
         [Authorize(Roles = "Staff, Trainer")]
@@ -95,13 +95,13 @@ namespace WebUoFASM1.Controllers
             var role = (from r in _context.Roles where r.Name.Contains("Trainer") select r).FirstOrDefault();
             var users = _context.Users.Where(x => x.Roles.Select(y => y.RoleId).Contains(role.Id)).ToList();
 
-            var TrainerTopicVM = new TrainerViewModel()
+            var TrainerVM = new TrainerViewModel()
             {
                 Trainers = users,
                 TrainerInfo = new TrainerInfo()
             };
 
-            return View(TrainerTopicVM);
+            return View(TrainerVM);
         }
 
         [HttpPost]

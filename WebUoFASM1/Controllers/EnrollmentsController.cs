@@ -23,8 +23,8 @@ namespace WebUoFASM1.Controllers
         {
             if (User.IsInRole("Staff"))
             {
-                var traineecourses = _context.Enrollments.Include(t => t.Course).Include(t => t.Trainee).ToList();
-                return View(traineecourses);
+                var enrollments = _context.Enrollments.Include(t => t.Course).Include(t => t.Trainee).ToList();
+                return View(enrollments);
             }
             if (User.IsInRole("Trainee"))
             {
@@ -46,14 +46,14 @@ namespace WebUoFASM1.Controllers
 
             var courses = _context.Courses.ToList();
 
-            var TrainerTopicVM = new AssignTraineeToCourseViewModel()
+            var EnrollmentVM = new AssignTraineeToCourseViewModel()
             {
                 Courses = courses,
                 Trainees = users,
                 Enrollment = new Enrollment()
             };
 
-            return View(TrainerTopicVM);
+            return View(EnrollmentVM);
         }
 
         [HttpPost]
@@ -74,14 +74,14 @@ namespace WebUoFASM1.Controllers
                 return RedirectToAction("Index");
             }
 
-            var TraineeTopicVM = new AssignTraineeToCourseViewModel()
+            var EnrollmentVM = new AssignTraineeToCourseViewModel()
             {
                 Courses = courses,
                 Trainees = users,
                 Enrollment = new Enrollment()
             };
 
-            return View(TraineeTopicVM);
+            return View(EnrollmentVM);
         }
 
         [Authorize(Roles = "Staff")]
@@ -92,7 +92,7 @@ namespace WebUoFASM1.Controllers
 
             var courses = _context.Courses.ToList();
 
-            var TrainerTopicVM = new AssignTraineeToCourseViewModel()
+            var EnrollmentVM = new AssignTraineeToCourseViewModel()
             {
                 Courses = courses,
 
@@ -100,7 +100,7 @@ namespace WebUoFASM1.Controllers
                 Enrollment = new Enrollment()
             };
 
-            return View(TrainerTopicVM);
+            return View(EnrollmentVM);
         }
 
         [HttpPost]
@@ -119,7 +119,7 @@ namespace WebUoFASM1.Controllers
                 return RedirectToAction("Index");
             }
 
-            var TrainerTopicVM = new AssignTraineeToCourseViewModel()
+            var EnrollmentVM = new AssignTraineeToCourseViewModel()
             {
                 Courses = courses,
 
@@ -127,7 +127,7 @@ namespace WebUoFASM1.Controllers
                 Enrollment = new Enrollment()
             };
 
-            return View(TrainerTopicVM);
+            return View(EnrollmentVM);
         }
 
         [Authorize(Roles = "Staff")]

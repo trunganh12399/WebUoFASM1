@@ -125,3 +125,4 @@ C:\Users\Admin\source\repos\WebUoFASM1\WebUoFASM1\bin\PagedList.dll
 C:\Users\Admin\source\repos\WebUoFASM1\WebUoFASM1\bin\PagedList.Mvc.dll
 C:\Users\Admin\source\repos\WebUoFASM1\WebUoFASM1\bin\PagedList.xml
 C:\Users\Admin\source\repos\WebUoFASM1\WebUoFASM1\bin\PagedList.Mvc.xml
+C:\Users\Admin\source\repos\WebUoFASM1\WebUoFASM1\obj\Release\WebUoFASM1.Migrations.Edit.resources

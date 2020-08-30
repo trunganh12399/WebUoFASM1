@@ -73,12 +73,22 @@
                              "Manager User", "Index", "Users", null, new { @class = "nav-link" }
                              )
                         </li>
+                        <li class="nav-item">
+                            @Html.ActionLink(
+                              "Edit User", "Index", "EditUser", null, new { @class = "nav-link" }
+                              )
+                        </li>
                     }
                     @if (Request.IsAuthenticated && User.IsInRole("Admin"))
                     {
                         <li class="nav-item">
                             @Html.ActionLink(
                               "Manager User", "Index", "Users", null, new { @class = "nav-link" }
+                              )
+                        </li>
+                        <li class="nav-item">
+                            @Html.ActionLink(
+                              "Edit User", "Index", "EditUser", null, new { @class = "nav-link" }
                               )
                         </li>
                         <li class="nav-item">

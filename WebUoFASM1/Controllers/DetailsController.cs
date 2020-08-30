@@ -44,7 +44,7 @@ namespace WebUoFASM1.Controllers
             var courses = _context.Courses.ToList();
             var topics = _context.Topics.ToList();
 
-            var TrainerTopicVM = new DetailViewModel()
+            var DetailVM = new DetailViewModel()
             {
                 Courses = courses,
                 Topics = topics,
@@ -52,7 +52,7 @@ namespace WebUoFASM1.Controllers
                 Detail = new Detail()
             };
 
-            return View(TrainerTopicVM);
+            return View(DetailVM);
         }
 
         [HttpPost]
@@ -71,7 +71,7 @@ namespace WebUoFASM1.Controllers
                 return RedirectToAction("Index");
             }
 
-            var TrainerTopicVM = new DetailViewModel()
+            var DetailVM = new DetailViewModel()
             {
                 Courses = courses,
                 Topics = topics,
@@ -79,7 +79,7 @@ namespace WebUoFASM1.Controllers
                 Detail = new Detail()
             };
 
-            return View(TrainerTopicVM);
+            return View(DetailVM);
         }
 
         [Authorize(Roles = "Staff")]
@@ -91,7 +91,7 @@ namespace WebUoFASM1.Controllers
             var courses = _context.Courses.ToList();
             var topics = _context.Topics.ToList();
 
-            var TrainerTopicVM = new DetailViewModel()
+            var DetailVM = new DetailViewModel()
             {
                 Courses = courses,
                 Topics = topics,
@@ -99,7 +99,7 @@ namespace WebUoFASM1.Controllers
                 Detail = new Detail()
             };
 
-            return View(TrainerTopicVM);
+            return View(DetailVM);
         }
 
         [HttpPost]
@@ -119,7 +119,7 @@ namespace WebUoFASM1.Controllers
                 return RedirectToAction("Index");
             }
 
-            var TrainerTopicVM = new DetailViewModel()
+            var DetailVM = new DetailViewModel()
             {
                 Courses = courses,
                 Topics = topics,
@@ -127,7 +127,7 @@ namespace WebUoFASM1.Controllers
                 Detail = new Detail()
             };
 
-            return View(TrainerTopicVM);
+            return View(DetailVM);
         }
 
         [Authorize(Roles = "Staff")]

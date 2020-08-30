@@ -24,8 +24,8 @@ namespace WebUoFASM1.Controllers
         {
             if (User.IsInRole("Staff"))
             {
-                var traineecourses = _context.TraineeInfos.Include(t => t.Trainee).ToList();
-                return View(traineecourses);
+                var trainees = _context.TraineeInfos.Include(t => t.Trainee).ToList();
+                return View(trainees);
             }
             if (User.IsInRole("Trainee"))
             {
@@ -37,33 +37,18 @@ namespace WebUoFASM1.Controllers
         }
 
         [Authorize(Roles = "Staff")]
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            TraineeInfo traineeInfo = _context.TraineeInfos.Find(id);
-            if (traineeInfo == null)
-            {
-                return HttpNotFound();
-            }
-            return View(traineeInfo);
-        }
-
-        [Authorize(Roles = "Staff")]
         public ActionResult Assign()
         {
             var role = (from r in _context.Roles where r.Name.Contains("Trainee") select r).FirstOrDefault();
             var users = _context.Users.Where(x => x.Roles.Select(y => y.RoleId).Contains(role.Id)).ToList();
 
-            var TraineeTopicVM = new TraineeViewModel()
+            var TraineeVM = new TraineeViewModel()
             {
                 Trainees = users,
                 TraineeInfo = new TraineeInfo()
             };
 
-            return View(TraineeTopicVM);
+            return View(TraineeVM);
         }
 
         [Authorize(Roles = "Staff")]
@@ -80,13 +65,13 @@ namespace WebUoFASM1.Controllers
                 return RedirectToAction("Index");
             }
 
-            var TraineeTopicVM = new TraineeViewModel()
+            var TraineeVM = new TraineeViewModel()
             {
                 Trainees = users,
                 TraineeInfo = new TraineeInfo(),
             };
 
-            return View(TraineeTopicVM);
+            return View(TraineeVM);
         }
 
         [Authorize(Roles = "Staff")]
@@ -95,13 +80,13 @@ namespace WebUoFASM1.Controllers
             var role = (from r in _context.Roles where r.Name.Contains("Trainee") select r).FirstOrDefault();
             var users = _context.Users.Where(x => x.Roles.Select(y => y.RoleId).Contains(role.Id)).ToList();
 
-            var TraineeTopicVM = new TraineeViewModel()
+            var TraineeVM = new TraineeViewModel()
             {
                 Trainees = users,
                 TraineeInfo = new TraineeInfo()
             };
 
-            return View(TraineeTopicVM);
+            return View(TraineeVM);
         }
 
         [HttpPost]

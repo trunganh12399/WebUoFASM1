@@ -11,11 +11,12 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title style="font-family: 'Times New Roman 25px';"> @ViewBag.Title - UOF </title>
+    <title style="font-family: 'Times New Roman 25px'; "> @ViewBag.Title - UOF </title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
+
     <div class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <div class="navbar-header">
@@ -73,12 +74,22 @@
                              "Manager User", "Index", "Users", null, new { @class = "nav-link" }
                              )
                         </li>
+                        <li class="nav-item">
+                            @Html.ActionLink(
+                              "Edit User", "Index", "EditUser", null, new { @class = "nav-link" }
+                              )
+                        </li>
                     }
                     @if (Request.IsAuthenticated && User.IsInRole("Admin"))
                     {
                         <li class="nav-item">
                             @Html.ActionLink(
                               "Manager User", "Index", "Users", null, new { @class = "nav-link" }
+                              )
+                        </li>
+                        <li class="nav-item">
+                            @Html.ActionLink(
+                              "Edit User", "Index", "EditUser", null, new { @class = "nav-link" }
                               )
                         </li>
                         <li class="nav-item">
