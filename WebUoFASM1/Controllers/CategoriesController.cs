@@ -23,6 +23,7 @@ namespace WebUoFASM1.Controllers
             return View(list);
         }
 
+        [Authorize(Roles = "Staff")]
         [HttpGet]
         public ActionResult Create()
         {
@@ -64,6 +65,7 @@ namespace WebUoFASM1.Controllers
             }
         }
 
+        [Authorize(Roles = "Staff")]
         [HttpGet]
         public ActionResult Edit(int id)
         {
@@ -96,6 +98,7 @@ namespace WebUoFASM1.Controllers
             return View(category);
         }
 
+        [Authorize(Roles = "Staff")]
         [HttpGet]
         public ActionResult Delete(int id)
         {

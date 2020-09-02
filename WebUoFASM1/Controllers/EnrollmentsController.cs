@@ -56,6 +56,7 @@ namespace WebUoFASM1.Controllers
             return View(EnrollmentVM);
         }
 
+        [Authorize(Roles = "Staff")]
         [HttpPost]
         public ActionResult Assign(AssignTraineeToCourseViewModel model)
         {
@@ -103,6 +104,7 @@ namespace WebUoFASM1.Controllers
             return View(EnrollmentVM);
         }
 
+        [Authorize(Roles = "Staff")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(AssignTraineeToCourseViewModel model)

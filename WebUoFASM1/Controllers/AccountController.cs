@@ -181,6 +181,8 @@ namespace WebUoFASM1.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "Staff, Admin")]
+
         //
         // POST: /Account/Register
         [HttpPost]

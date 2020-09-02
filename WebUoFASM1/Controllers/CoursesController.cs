@@ -25,6 +25,7 @@ namespace WebUoFASM1.Controllers
             return View(list);
         }
 
+        [Authorize(Roles = "Staff")]
         [HttpGet]
         public ActionResult Create()
         {
@@ -51,6 +52,7 @@ namespace WebUoFASM1.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "Staff")]
         public ActionResult Delete(int id)
         {
             var productInDb = _context.Courses.SingleOrDefault(p => p.Id == id);
@@ -80,6 +82,7 @@ namespace WebUoFASM1.Controllers
             return View(viewModel);
         }
 
+        [Authorize(Roles = "Staff")]
         [HttpPost]
         public ActionResult Edit(Course course)
         {
