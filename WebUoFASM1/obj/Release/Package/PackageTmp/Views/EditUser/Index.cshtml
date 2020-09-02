@@ -29,13 +29,6 @@
 
     <h2>Manager User</h2>
 
-    @if (Request.IsAuthenticated && User.IsInRole("Staff"))
-    {
-        <p>
-            @Html.ActionLink("Assign", "Assign")
-        </p>
-    }
-
     <table>
         <tr>
             <th>Username</th>
@@ -76,22 +69,3 @@
         }
     </table>
 </body>
-
-<div class="panel-footer">
-    <p class="box-title"><b>Total Users till @String.Format("{0 : dddd, MMMM d, yyyy}", DateTime.Now)  : </b><span class="label label-primary">@Model.Count()</span></p>
-</div>
-
-@section scripts{
-    <script>
-        $(function () {
-            $('#EditUser').DataTable({
-                "paging": true,
-                "lengthChange": true,
-                "searching": true,
-                "ordering": true,
-                "info": true,
-                "autoWidth": true
-            });
-        });
-    </script>
-}

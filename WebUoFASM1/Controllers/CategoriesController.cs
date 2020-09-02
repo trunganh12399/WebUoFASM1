@@ -8,29 +8,22 @@ namespace WebUoFASM1.Controllers
 {
     [Authorize(Roles = "Staff")]
     public class CategoriesController : Controller
+
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationDbContext _context;
+
+        public CategoriesController()
+        {
+            _context = new ApplicationDbContext();
+        }
 
         public ActionResult Index()
         {
-            return View(db.Categories.ToList());
+            var list = _context.Categories.ToList();
+            return View(list);
         }
 
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            }
-            Category category = db.Categories.Find(id);
-            if (category == null)
-            {
-                return HttpNotFound();
-            }
-            return View(category);
-        }
-
-        [Authorize(Roles = "Staff")]
+        [HttpGet]
         public ActionResult Create()
         {
             return View();
@@ -38,26 +31,43 @@ namespace WebUoFASM1.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description")] Category category)
+        public ActionResult Create(Category category)
         {
+            bool IsProductNameExist = _context.Categories.Any
+                 (x => x.Name == category.Name && x.Id != category.Id);
+            if (IsProductNameExist == true)
+            {
+                ModelState.AddModelError("Name", "Category Name already exists");
+            }
+
             if (ModelState.IsValid)
             {
-                db.Categories.Add(category);
-                db.SaveChanges();
+                _context.Categories.Add(category);
+                _context.SaveChanges();
                 return RedirectToAction("Index");
             }
 
             return View(category);
         }
 
-        [Authorize(Roles = "Staff")]
-        public ActionResult Edit(int? id)
+        public JsonResult IsProductNameExist(string ProductName, int? Id)
         {
-            if (id == null)
+            var validateName = _context.Categories.FirstOrDefault
+                                (x => x.Name == ProductName && x.Id != Id);
+            if (validateName != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+                return Json(false, JsonRequestBehavior.AllowGet);
             }
-            Category category = db.Categories.Find(id);
+            else
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult Edit(int id)
+        {
+            Category category = _context.Categories.Find(id);
             if (category == null)
             {
                 return HttpNotFound();
@@ -67,39 +77,37 @@ namespace WebUoFASM1.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Description")] Category category)
+        public ActionResult Edit([Bind(Include = "Id,Name, Description")]
+                          Category category)
         {
+            bool IsProductNameExist = _context.Categories.Any
+                            (x => x.Name == category.Name && x.Id != category.Id);
+            if (IsProductNameExist == true)
+            {
+                ModelState.AddModelError("Name", "Category Name already exists");
+            }
+
             if (ModelState.IsValid)
             {
-                db.Entry(category).State = EntityState.Modified;
-                db.SaveChanges();
+                _context.Entry(category).State = EntityState.Modified;
+                _context.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(category);
         }
 
-        [Authorize(Roles = "Staff")]
-        public ActionResult Delete(int? id)
+        [HttpGet]
+        public ActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            }
-            Category category = db.Categories.Find(id);
-            if (category == null)
+            var productInDb = _context.Categories.SingleOrDefault(p => p.Id == id);
+
+            if (productInDb == null)
             {
                 return HttpNotFound();
             }
-            return View(category);
-        }
 
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Category category = db.Categories.Find(id);
-            db.Categories.Remove(category);
-            db.SaveChanges();
+            _context.Categories.Remove(productInDb);
+            _context.SaveChanges();
             return RedirectToAction("Index");
         }
     }

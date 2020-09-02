@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Mvc;
 
 namespace WebUoFASM1.Models
 {
@@ -15,6 +17,8 @@ namespace WebUoFASM1.Models
 
         [Required]
         [DisplayName("Course Name")]
+        [Remote("IsCourseNameExist", "Course", AdditionalFields = "Id",
+                ErrorMessage = "Course name already exists")]
         public string Name { get; set; }
 
         [Required]

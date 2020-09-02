@@ -41,9 +41,10 @@
             <th>PhoneNumber</th>
             <th>Type</th>
             <th>Email</th>
+            <th>Edit</th>
+
             @if (Request.IsAuthenticated && User.IsInRole("Staff"))
             {
-                <th>Edit</th>
                 <th>Delete</th>
             }
         </tr>
@@ -55,10 +56,10 @@
                 <td> @item.PhoneNumber</td>
                 <td> @item.Type</td>
                 <td> @item.Email</td>
+                <td> @Html.ActionLink("Edit", "Edit", new { id = item.Id })</td>
+
                 @if (Request.IsAuthenticated && User.IsInRole("Staff"))
                 {
-
-                    <td> @Html.ActionLink("Edit", "Edit", new { id = item.Id })</td>
 
                     <td> @Html.ActionLink("Delete", "Delete", new { id = item.Id })</td>
                 }

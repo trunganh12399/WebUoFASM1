@@ -36,10 +36,10 @@
 
     <table>
         <tr>
-            <th>Trainee</th>
             <th>Course</th>
             @if (Request.IsAuthenticated && User.IsInRole("Staff"))
             {
+                <th>Trainee</th>
                 <th>Edit</th>
                 <th>Delete</th>
             }
@@ -47,10 +47,10 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td> @item.Trainee.UserName</td>
                 <td> @item.Course.Name</td>
                 @if (Request.IsAuthenticated && User.IsInRole("Staff"))
                 {
+                    <td> @item.Trainee.UserName</td>
 
                     <td> @Html.ActionLink("Edit", "Edit", new { id = item.Id })</td>
 

@@ -7,7 +7,7 @@
 
 <style>
     table {
-        font-family: 'Times New Roman 18px';
+        font-family: 'Times New Roman';
         border-collapse: collapse;
         width: 100%;
     }
@@ -32,37 +32,59 @@
         <p>
             @Html.ActionLink("Assign", "Assign")
         </p>
-    }
 
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Trainee</th>
-            <th>PhoneNumber</th>
-            <th>Education</th>
-            <th>Email</th>
-            @if (Request.IsAuthenticated && User.IsInRole("Staff"))
-            {
-                <th>Edit</th>
-                <th>Delete</th>
-            }
-        </tr>
-        @foreach (var item in Model)
-        {
+        <table>
             <tr>
-                <td> @item.Name</td>
-                <td> @item.Trainee.UserName</td>
-                <td> @item.PhoneNumber</td>
-                <td> @item.Education</td>
-                <td> @item.Email</td>
+                <th>Name</th>
+                <th>Trainee</th>
+                <th>PhoneNumber</th>
+                <th>Education</th>
+                <th>Email</th>
                 @if (Request.IsAuthenticated && User.IsInRole("Staff"))
                 {
-
-                    <td> @Html.ActionLink("Edit", "Edit", new { id = item.Id })</td>
-
-                    <td> @Html.ActionLink("Delete", "Delete", new { id = item.Id })</td>
+                    <th>Edit</th>
+                    <th>Delete</th>
                 }
             </tr>
-        }
-    </table>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td> @item.Name</td>
+                    <td> @item.Trainee.UserName</td>
+                    <td> @item.PhoneNumber</td>
+                    <td> @item.Education</td>
+                    <td> @item.Email</td>
+                    @if (Request.IsAuthenticated && User.IsInRole("Staff"))
+                    {
+
+                        <td> @Html.ActionLink("Edit", "Edit", new { id = item.Id })</td>
+
+                        <td> @Html.ActionLink("Delete", "Delete", new { id = item.Id })</td>
+                    }
+                </tr>
+            }
+        </table>
+    }
+    @if (User.IsInRole("Trainee"))
+    {
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Trainee</th>
+                <th>PhoneNumber</th>
+                <th>Education</th>
+                <th>Email</th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td> @item.Name</td>
+                    <td> @item.Trainee.UserName</td>
+                    <td> @item.PhoneNumber</td>
+                    <td> @item.Education</td>
+                    <td> @item.Email</td>
+                </tr>
+            }
+        </table>
+    }
 </body>

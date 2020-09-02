@@ -8,28 +8,22 @@ namespace WebUoFASM1.Controllers
 {
     [Authorize(Roles = "Staff")]
     public class TopicsController : Controller
+
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationDbContext _context;
+
+        public TopicsController()
+        {
+            _context = new ApplicationDbContext();
+        }
 
         public ActionResult Index()
         {
-            return View(db.Topics.ToList());
+            var list = _context.Topics.ToList();
+            return View(list);
         }
 
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Topic topic = db.Topics.Find(id);
-            if (topic == null)
-            {
-                return HttpNotFound();
-            }
-            return View(topic);
-        }
-
+        [HttpGet]
         public ActionResult Create()
         {
             return View();
@@ -37,25 +31,43 @@ namespace WebUoFASM1.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description")] Topic topic)
+        public ActionResult Create(Topic model)
         {
+            bool IsTopicNameExist = _context.Topics.Any
+                 (x => x.Name == model.Name && x.Id != model.Id);
+            if (IsTopicNameExist == true)
+            {
+                ModelState.AddModelError("Name", "Topic Name already exists");
+            }
+
             if (ModelState.IsValid)
             {
-                db.Topics.Add(topic);
-                db.SaveChanges();
+                _context.Topics.Add(model);
+                _context.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(topic);
+            return View(model);
         }
 
-        public ActionResult Edit(int? id)
+        public JsonResult IsProductNameExist(string TopicName, int? Id)
         {
-            if (id == null)
+            var validateName = _context.Topics.FirstOrDefault
+                                (x => x.Name == TopicName && x.Id != Id);
+            if (validateName != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return Json(false, JsonRequestBehavior.AllowGet);
             }
-            Topic topic = db.Topics.Find(id);
+            else
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult Edit(int id)
+        {
+            Topic topic = _context.Topics.Find(id);
             if (topic == null)
             {
                 return HttpNotFound();
@@ -65,38 +77,37 @@ namespace WebUoFASM1.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Description")] Topic topic)
+        public ActionResult Edit([Bind(Include = "Id,Name, Description")]
+                          Topic model)
         {
+            bool IsTopicNameExist = _context.Topics.Any
+                            (x => x.Name == model.Name && x.Id != model.Id);
+            if (IsTopicNameExist == true)
+            {
+                ModelState.AddModelError("Name", "Topic Name already exists");
+            }
+
             if (ModelState.IsValid)
             {
-                db.Entry(topic).State = EntityState.Modified;
-                db.SaveChanges();
+                _context.Entry(model).State = EntityState.Modified;
+                _context.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(topic);
+            return View(model);
         }
 
-        public ActionResult Delete(int? id)
+        [HttpGet]
+        public ActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Topic topic = db.Topics.Find(id);
-            if (topic == null)
+            var topicInDb = _context.Topics.SingleOrDefault(p => p.Id == id);
+
+            if (topicInDb == null)
             {
                 return HttpNotFound();
             }
-            return View(topic);
-        }
 
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Topic topic = db.Topics.Find(id);
-            db.Topics.Remove(topic);
-            db.SaveChanges();
+            _context.Topics.Remove(topicInDb);
+            _context.SaveChanges();
             return RedirectToAction("Index");
         }
     }

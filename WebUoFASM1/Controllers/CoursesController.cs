@@ -3,110 +3,113 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using WebUoFASM1.Models;
+using WebUoFASM1.ViewModels;
 
 namespace WebUoFASM1.Controllers
 {
     [Authorize(Roles = "Staff")]
     public class CoursesController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationDbContext _context;
 
+        public CoursesController()
+        {
+            _context = new ApplicationDbContext();
+        }
+
+        // GET: Products
+        [HttpGet]
         public ActionResult Index()
         {
-            var courses = db.Courses.Include(c => c.Category).ToList();
-            return View(courses.ToList());
+            var list = _context.Courses.Include(p => p.Category).ToList();
+            return View(list);
         }
 
-        [Authorize(Roles = "Staff")]
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            }
-            Course course = db.Courses.Find(id);
-            if (course == null)
-            {
-                return HttpNotFound();
-            }
-            return View(course);
-        }
-
-        [Authorize(Roles = "Staff")]
+        [HttpGet]
         public ActionResult Create()
         {
-            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name");
-            return View();
+            var viewModel = new CourseCategoryViewModel();
+            viewModel.Categories = _context.Categories.ToList();
+            return View(viewModel);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description,CategoryId")] Course course)
+        public ActionResult Create(Course course)
         {
-            if (ModelState.IsValid)
+            bool IsCourseNameExist = _context.Courses.Any
+                   (x => x.Name == course.Name && x.Id != course.Id);
+            if (IsCourseNameExist == true)
             {
-                db.Courses.Add(course);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                ModelState.AddModelError("Name", "Course Name already exists");
             }
-
-            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", course.CategoryId);
-            return View(course);
-        }
-
-        [Authorize(Roles = "Staff")]
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
+            if (!ModelState.IsValid)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+                return RedirectToAction("Create");
             }
-            Course course = db.Courses.Find(id);
-            if (course == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", course.CategoryId);
-            return View(course);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Description,CategoryId")] Course course)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(course).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", course.CategoryId);
-            return View(course);
-        }
-
-        [Authorize(Roles = "Staff")]
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            }
-            Course course = db.Courses.Find(id);
-            if (course == null)
-            {
-                return HttpNotFound();
-            }
-            return View(course);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Course course = db.Courses.Find(id);
-            db.Courses.Remove(course);
-            db.SaveChanges();
+            _context.Courses.Add(course);
+            _context.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult Delete(int id)
+        {
+            var productInDb = _context.Courses.SingleOrDefault(p => p.Id == id);
+
+            if (productInDb == null)
+            {
+                return HttpNotFound();
+            }
+
+            _context.Courses.Remove(productInDb);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public ActionResult Edit(int id)
+        {
+            var CourseInDb = _context.Courses.SingleOrDefault(m => m.Id == id);
+            if (CourseInDb == null) return HttpNotFound();
+
+            var viewModel = new CourseCategoryViewModel()
+            {
+                Categories = _context.Categories.ToList(),
+                Course = CourseInDb
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(Course course)
+        {
+            bool IsCourseNameExist = _context.Courses.Any
+                           (x => x.Name == course.Name && x.Id != course.Id);
+            if (IsCourseNameExist == true)
+            {
+                ModelState.AddModelError("Name", "Course Name already exists");
+            }
+            var CourseInDb = _context.Courses.SingleOrDefault(m => m.Id == course.Id);
+            CourseInDb.Name = course.Name;
+            CourseInDb.Description = course.Description;
+            CourseInDb.CategoryId = course.CategoryId;
+
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public JsonResult IsCourseNameExist(string ProductName, int? Id)
+        {
+            var validateName = _context.Courses.FirstOrDefault
+                                (x => x.Name == ProductName && x.Id != Id);
+            if (validateName != null)
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
         }
     }
 }
